@@ -1,0 +1,27 @@
+#ifndef GAME_H
+#define GAME_H
+
+#include <QObject>
+
+const int N = 4, M = 4; // 游戏界面尺寸
+inline int Dx[] = {-1, 1, 0, 0};
+inline int Dy[] = { 0, 0, 1,-1};
+class BaseGame : public QObject {
+    Q_OBJECT
+protected:
+    int score;
+    int Board[N+1][M+1];
+    void NewNumber();
+    bool InRange(int x, int y);
+    bool CanMove (int direction);
+public:
+    explicit BaseGame(QObject *parent = nullptr);
+    void Init();
+    int GetScore();
+    bool Move (int direction); //接收信号并更新状态 0 left, 1 right, 2 up, 3 down
+    bool IsGameOver(); //判断游戏是否结束
+signals:
+    void update(); //用于传给qt的信号
+};
+
+#endif
