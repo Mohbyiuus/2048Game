@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include<QLabel>
+#include<Game.h>
 #include <QMainWindow>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +18,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
+    void initBoard();
+    void updateBoard();
+    QLabel* cells[N][M];
 
 private:
     Ui::MainWindow *ui;
