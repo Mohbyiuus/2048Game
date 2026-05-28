@@ -1,0 +1,113 @@
+/* =========================
+   主窗口
+   ========================= */
+
+QMainWindow{
+
+    background-color:#5aa9e6;
+}
+
+
+/* =========================
+   游戏标题
+   ========================= */
+
+QLabel#titleLabel{
+
+    background-color:#1e3a5f;
+
+    color:#f2f7ff;
+
+    border:4px solid #0b1b2b;
+
+    padding:10px;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    font-family:"Microsoft YaHei";
+
+}
+
+
+/* =========================
+   分数标签
+   ========================= */
+
+QLabel#scoreLabel{
+
+    background-color:#4ea5d9;
+
+    color:white;
+
+    border:3px solid #0b1b2b;
+
+    padding:8px;
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+
+/* =========================
+   按钮
+   ========================= */
+
+QPushButton{
+
+    background-color:#7dd3fc;
+
+    color:#0b1b2b;
+
+    border:4px solid #0b1b2b;
+
+    padding:10px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    min-width:120px;
+
+    min-height:45px;
+}
+
+
+/* =========================
+   按钮悬停
+   ========================= */
+
+QPushButton:hover{
+
+    background-color:#bae6fd;
+
+    color:#000000;
+}
+
+
+/* =========================
+   按钮按下
+   ========================= */
+
+QPushButton:pressed{
+
+    background-color:#1e3a5f;
+
+    color:white;
+}
+
+
+/* =========================
+   棋盘区域
+   ========================= */
+
+#boardWidget{
+
+    background-color:#2b5876;
+
+    border:6px solid #0b1b2b;
+
+    padding:12px;
+}
