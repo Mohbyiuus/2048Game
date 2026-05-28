@@ -19,7 +19,7 @@ void BaseGame::Init() {
     NewNumber();
     update();
 }
-int BaseGame::GetScore() {return score;}
+double BaseGame::GetScore() {return score;}
 void BaseGame::NewNumber() {
 
     int EmptyCnt = 0;

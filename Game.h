@@ -9,7 +9,7 @@ inline int Dy[] = { 0, 0, 1,-1};
 class BaseGame : public QObject {
     Q_OBJECT
 protected:
-    int score;
+    double score;
     int Board[N+1][M+1];
     void NewNumber();
     bool InRange(int x, int y);
@@ -17,7 +17,7 @@ protected:
 public:
     explicit BaseGame(QObject *parent = nullptr);
     void Init();
-    int GetScore();
+    double GetScore();
     bool Move (int direction); //接收信号并更新状态 0 left, 1 right, 2 up, 3 down
     bool IsGameOver(); //判断游戏是否结束
 signals:
