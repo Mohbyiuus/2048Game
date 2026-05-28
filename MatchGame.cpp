@@ -1,9 +1,10 @@
-#include<MatchGame.h>
+#include"MatchGame.h"
+#include<queue>
 
 MatchGame::MatchGame(QObject *parent):BaseGame(parent){
 }
 
-bool MatchGame::match_n(int n){//是否n连
+bool MatchGame::match(){//n连消除,如果发生消除返回1
     int mask[N+1][M+1] = {0};
     bool hasmatch = 0;
     //横
@@ -21,10 +22,11 @@ bool MatchGame::match_n(int n){//是否n连
                 len++;
             }
 
-            if(len>=n){//超过n也消
-                hasmatch = 1;
+            int exceed = len - LEAST_MATCH_NUM + 1;
+            if(exceed > 0){//超过n也消
+                hasmatch = true;
                 for(int k = 0; k < len; k++){
-                    mask[i][j+k] = 1;
+                    mask[i][j+k] += exceed;
                 }
             }
             j += len;
@@ -45,22 +47,23 @@ bool MatchGame::match_n(int n){//是否n连
                 len++;
             }
 
-            if(len>=n){//超过n也消
-                hasmatch = 1;
+            int exceed = len - LEAST_MATCH_NUM + 1;
+            if(exceed > 0){//超过n也消
+                hasmatch = true;
                 for(int k = 0; k < len; k++){
-                    mask[i+k][j] = 1;
+                    mask[i+k][j] += exceed;
                 }
             }
             i += len;
         }
     }
     //执行消除
-    //简易加分机制:score+=board[i][j]
+    //连消奖励 *ratio^n
     if(hasmatch){
         for(int i = 1; i <= N; i++){
             for(int j = 1; j <= M; j++){
                 if(mask[i][j]){
-                    score += Board[i][j];
+                    score += Board[i][j] * pow(ratio, (double)mask[i][j]);
                     Board[i][j] = 0;
                 }
             }
@@ -68,4 +71,28 @@ bool MatchGame::match_n(int n){//是否n连
     }
 
     return hasmatch;
+}
+
+void MatchGame::apply_gravity(){//下落
+    for(int i = 1; i <= M; i++){
+        std::queue<int> q;
+        for(int j = 1; j <= N; j++){
+            if(Board[j][i]){
+                q.push(Board[j][i]);
+                Board[j][i] = 0;
+            }
+        }
+        int ptr = N;
+        while(!q.empty()){
+            Board[ptr][i] = q.front();
+            q.pop();
+            ptr--;
+        }
+    }
+}
+
+void MatchGame::chain_match(){
+    while(match()){
+        apply_gravity();
+    }
 }
