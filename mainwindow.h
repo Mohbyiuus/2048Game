@@ -20,7 +20,7 @@ public:
     ~MainWindow() override;
     void initBoard();
     void updateBoard();
-    QLabel* cells[N][M];
+    QLabel* cells[N+1][M+1];
 
 private:
     Ui::MainWindow *ui;

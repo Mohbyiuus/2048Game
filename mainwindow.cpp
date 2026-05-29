@@ -40,9 +40,9 @@ void MainWindow::initBoard()
         qDebug() << "grid layout is null!";
         return;
     }
-    for(int i = 0; i < N; i++)
+    for(int i = 1; i <= N; i++)
     {
-        for(int j = 0; j < M; j++)
+        for(int j = 1; j <= M; j++)
         {
             cells[i][j]=new QLabel;
 
@@ -62,7 +62,7 @@ void MainWindow::initBoard()
                 "color:white;"
                 );
 
-            grid->addWidget(label, i, j);
+            grid->addWidget(label, i-1, j-1);
 
         }
     }
@@ -70,11 +70,11 @@ void MainWindow::initBoard()
 
 void MainWindow::updateBoard()
 {
-    for(int i = 0; i < 8; i++)
+    for(int i = 1; i <= N; i++)
     {
-        for(int j = 0; j < 8; j++)
+        for(int j = 1; j <= M; j++)
         {
-            int value = game.Board[i][j];
+            int value = game.GetBoard(i,j);
 
             if(value == 0)
             {
@@ -90,6 +90,6 @@ void MainWindow::updateBoard()
     }
 
     ui->scoreLabel->setText(
-        "Score: " + QString::number(game.score)
+        "Score: " + QString::number(game.GetScore())
         );
 }

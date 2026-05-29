@@ -18,6 +18,7 @@ public:
     explicit BaseGame(QObject *parent = nullptr);
     void Init();
     double GetScore();
+    int GetBoard(int i, int j);
     bool Move (int direction); //接收信号并更新状态 0 left, 1 right, 2 up, 3 down
     bool IsGameOver(); //判断游戏是否结束
 signals:

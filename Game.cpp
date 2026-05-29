@@ -20,6 +20,7 @@ void BaseGame::Init() {
     update();
 }
 double BaseGame::GetScore() {return score;}
+int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
 void BaseGame::NewNumber() {
 
     int EmptyCnt = 0;
