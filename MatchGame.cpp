@@ -73,26 +73,8 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
     return hasmatch;
 }
 
-void MatchGame::apply_gravity(){//下落
-    for(int i = 1; i <= M; i++){
-        std::queue<int> q;
-        for(int j = 1; j <= N; j++){
-            if(Board[j][i]){
-                q.push(Board[j][i]);
-                Board[j][i] = 0;
-            }
-        }
-        int ptr = N;
-        while(!q.empty()){
-            Board[ptr][i] = q.front();
-            q.pop();
-            ptr--;
-        }
-    }
-}
-
 void MatchGame::chain_match(){
     while(match()){
-        apply_gravity();
+        Gravity();
     }
 }

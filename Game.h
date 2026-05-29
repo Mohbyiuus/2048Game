@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-const int N = 4, M = 4; // 游戏界面尺寸
+const int N = 4, M = 6; // 游戏界面尺寸
 inline int Dx[] = { 0, 0,-1, 1};
 inline int Dy[] = {-1, 1, 0, 0};
 class BaseGame : public QObject {
@@ -11,8 +11,9 @@ class BaseGame : public QObject {
 protected:
     double score;
     int Board[N+1][M+1];
-    void NewNumber();
-    bool InRange(int x, int y);
+    void NewNumber ();
+    void Gravity (); // 重力组件，记得每次更新状态的时候调用
+    bool InRange (int x, int y);
     bool CanMove (int direction);
 public:
     explicit BaseGame(QObject *parent = nullptr);

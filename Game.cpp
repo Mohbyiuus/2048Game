@@ -17,6 +17,7 @@ void BaseGame::Init() {
         for (int j=1;j<=M;j++) Board[i][j] = 0;
     NewNumber();
     NewNumber();
+    Gravity();
     update();
 }
 double BaseGame::GetScore() {return score;}
@@ -50,6 +51,23 @@ bool BaseGame::CanMove(int direction) {
                 if (InRange(tx, ty) && (!Board[tx][ty] || Board[i][j] == Board[tx][ty])) return true;
             }
     return false;
+}
+void BaseGame::Gravity () {
+    for(int i = 1; i <= M; i++){
+        std::queue<int> q;
+        for(int j = 1; j <= N; j++){
+            if(Board[j][i]){
+                q.push(Board[j][i]);
+                Board[j][i] = 0;
+            }
+        }
+        int ptr = N;
+        while(!q.empty()){
+            Board[ptr][i] = q.front();
+            q.pop();
+            ptr--;
+        }
+    }
 }
 bool BaseGame::IsGameOver() { return (CanMove(0) || CanMove(1) || CanMove(2) || CanMove(3)); }
 bool BaseGame::Move(int direction) {
@@ -117,6 +135,7 @@ bool BaseGame::Move(int direction) {
         break;
     }
     NewNumber();
+    Gravity();
     update();
     return true;
 }

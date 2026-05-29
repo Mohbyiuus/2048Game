@@ -11,7 +11,6 @@ class MatchGame: public BaseGame{
 public:
     MatchGame(QObject *parent = nullptr);
     bool match();
-    void apply_gravity();
     void chain_match();
 };
 #endif // MATCHGAME_H

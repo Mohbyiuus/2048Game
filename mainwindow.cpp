@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     QFile file(":/style.qss");
 
-    file.open(QFile::ReadOnly);
+    if(!file.open(QFile::ReadOnly))
+        qDebug() << "Error"<<file.errorString();
 
     this->setStyleSheet(file.readAll());
 
