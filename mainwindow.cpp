@@ -5,6 +5,7 @@
 #include<Qdebug>
 #include <QFile>
 #include<MatchGame.h>
+#include<QKeyEvent>
 
 
 MatchGame game;
@@ -60,7 +61,7 @@ void MainWindow::initBoard()
                 "border-radius:10px;"
                 "font-size:24px;"
                 "font-weight:bold;"
-                "color:white;"
+                "color:black;"
                 );
 
             grid->addWidget(label, i-1, j-1);
@@ -93,4 +94,26 @@ void MainWindow::updateBoard()
     ui->scoreLabel->setText(
         "Score: " + QString::number(game.GetScore())
         );
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event){
+    int dir = -1;
+    switch(event->key()){
+        case Qt::Key_A:
+            dir = 0;
+            break;
+        case Qt::Key_D:
+            dir = 1;
+            break;
+        case Qt::Key_W:
+            dir = 2;
+            break;
+        case Qt::Key_S:
+            dir = 3;
+            break;
+    }
+    if(game.Move(dir)){
+        game.chain_match();
+        updateBoard();
+    }
 }

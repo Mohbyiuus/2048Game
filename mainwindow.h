@@ -3,6 +3,7 @@
 #include<QLabel>
 #include<Game.h>
 #include <QMainWindow>
+#include<QKeyEvent>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,5 +25,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+protected:
+    void keyPressEvent(QKeyEvent *event) override;    
 };
 #endif // MAINWINDOW_H
