@@ -31,7 +31,7 @@ void BaseGame::NewNumber() {
                 EmptyCnt++;
                 EmptyCode.push_back (make_pair(i, j));
             }
-
+    if(!EmptyCnt) return;
     random_device rd;
     mt19937 gen(rd());
 
@@ -55,7 +55,7 @@ bool BaseGame::CanMove(int direction) {
 void BaseGame::Gravity () {
     for(int i = 1; i <= M; i++){
         std::queue<int> q;
-        for(int j = 1; j <= N; j++){
+        for(int j = N; j >= 1; j--){
             if(Board[j][i]){
                 q.push(Board[j][i]);
                 Board[j][i] = 0;

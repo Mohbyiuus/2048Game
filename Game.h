@@ -12,10 +12,10 @@ protected:
     double score;
     int Board[N+1][M+1];
     void NewNumber ();
-    void Gravity (); // 重力组件，记得每次更新状态的时候调用
     bool InRange (int x, int y);
     bool CanMove (int direction);
 public:
+    void Gravity (); // 重力组件，记得每次更新状态的时候调用
     explicit BaseGame(QObject *parent = nullptr);
     void Init();
     double GetScore();

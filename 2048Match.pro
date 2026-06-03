@@ -15,7 +15,7 @@ SOURCES += \
 HEADERS += \
     Game.h \
     MatchGame.h \
-    a.h \
+    ClickableLabel.h \
     mainwindow.h
 
 FORMS += \
