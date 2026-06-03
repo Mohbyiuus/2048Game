@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include<QKeyEvent>
 #include<ClickableLabel.h>
+#include <QMessageBox>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,6 +25,7 @@ public:
     void updateBoard();
     void updateCell(ClickableLabel* label, int value);
     ClickableLabel* cells[N+1][M+1];
+    void gameover();
 
 private:
     Ui::MainWindow *ui;
