@@ -150,7 +150,7 @@ void MainWindow::initBoard()
 
             label->setAlignment(Qt::AlignCenter);
 
-            label->setFixedSize(72,72);
+            label->setFixedSize(36,36);
 
 
             grid->addWidget(label, i-1, j-1);
@@ -200,7 +200,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
             game.Gravity();
             updateBoard();
         });
-
+    }
+    if(!game.IsGameOver()){
+        gameover();
     }
 }
 void MainWindow::on_pushButton_clicked()
@@ -208,4 +210,22 @@ void MainWindow::on_pushButton_clicked()
     game.Init();
     updateBoard();
 }
+
+void MainWindow::gameover()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "游戏结束", "游戏结束！是否重新开始？",
+                                  QMessageBox::Yes | QMessageBox::No);
+    if(reply == QMessageBox::Yes)
+    {
+        game.Init();
+        updateBoard();
+    }
+    if(reply == QMessageBox::No)
+    {
+       this->close();
+    }
+}
+
+
 
