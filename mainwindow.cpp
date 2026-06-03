@@ -150,7 +150,7 @@ void MainWindow::initBoard()
 
             label->setAlignment(Qt::AlignCenter);
 
-            label->setFixedSize(36,36);
+            label->setFixedSize(72,72);
 
 
             grid->addWidget(label, i-1, j-1);
