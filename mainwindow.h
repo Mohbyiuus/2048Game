@@ -4,6 +4,7 @@
 #include<Game.h>
 #include <QMainWindow>
 #include<QKeyEvent>
+#include<ClickableLabel.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -21,11 +22,14 @@ public:
     ~MainWindow() override;
     void initBoard();
     void updateBoard();
-    QLabel* cells[N+1][M+1];
+    void updateCell(ClickableLabel* label, int value);
+    ClickableLabel* cells[N+1][M+1];
 
 private:
     Ui::MainWindow *ui;
 protected:
-    void keyPressEvent(QKeyEvent *event) override;    
+    void keyPressEvent(QKeyEvent *event) override;
+private slots:
+    void on_pushButton_clicked();
 };
 #endif // MAINWINDOW_H
