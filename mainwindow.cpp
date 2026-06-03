@@ -4,8 +4,10 @@
 #include <QLabel>
 #include<Qdebug>
 #include <QFile>
+#include <QTimer>
 #include<MatchGame.h>
 #include<QKeyEvent>
+
 
 
 MatchGame game;
@@ -33,6 +35,100 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateCell(ClickableLabel* label, int value)
+{
+    if(value == 0)
+    {
+        label->setText("");
+
+        label->setStyleSheet(
+            "background:#cdc1b4;"
+            "border-radius:10px;"
+            );
+        return;
+    }
+
+    label->setText(QString::number(value));
+
+    QString bgColor;
+    QString textColor = "#776e65";
+    int fontSize = 24;
+
+    switch(value)
+    {
+    case 2:
+        bgColor = "#eee4da";
+        break;
+
+    case 4:
+        bgColor = "#ede0c8";
+        break;
+
+    case 8:
+        bgColor = "#f2b179";
+        textColor = "white";
+        break;
+
+    case 16:
+        bgColor = "#f59563";
+        textColor = "white";
+        break;
+
+    case 32:
+        bgColor = "#f67c5f";
+        textColor = "white";
+        break;
+
+    case 64:
+        bgColor = "#f65e3b";
+        textColor = "white";
+        break;
+
+    case 128:
+        bgColor = "#edcf72";
+        textColor = "white";
+        break;
+
+    case 256:
+        bgColor = "#edcc61";
+        textColor = "white";
+        break;
+
+    case 512:
+        bgColor = "#edc850";
+        textColor = "white";
+        break;
+
+    case 1024:
+        bgColor = "#edc53f";
+        textColor = "white";
+        fontSize = 20;
+        break;
+
+    case 2048:
+        bgColor = "#edc22e";
+        textColor = "white";
+        fontSize = 20;
+        break;
+
+    default:
+        bgColor = "#3c3a32";
+        textColor = "white";
+        fontSize = 18;
+    }
+
+    label->setStyleSheet(QString(
+                             "background:%1;"
+                             "border-radius:10px;"
+                             "font-size:%2px;"
+                             "font-weight:bold;"
+                             "color:%3;"
+                             )
+                             .arg(bgColor)
+                             .arg(fontSize)
+                             .arg(textColor));
+}
+
 void MainWindow::initBoard()
 {
     QGridLayout* grid =
@@ -46,23 +142,16 @@ void MainWindow::initBoard()
     {
         for(int j = 1; j <= M; j++)
         {
-            cells[i][j]=new QLabel;
+            cells[i][j]=new ClickableLabel;
 
-            QLabel* label = cells[i][j];
+            ClickableLabel* label = cells[i][j];
 
-            label->setText("0");
+            updateCell(label,0);
 
             label->setAlignment(Qt::AlignCenter);
 
             label->setFixedSize(72,72);
 
-            label->setStyleSheet(
-                "background:#dbeafe;"
-                "border-radius:10px;"
-                "font-size:24px;"
-                "font-weight:bold;"
-                "color:black;"
-                );
 
             grid->addWidget(label, i-1, j-1);
 
@@ -78,16 +167,7 @@ void MainWindow::updateBoard()
         {
             int value = game.GetBoard(i,j);
 
-            if(value == 0)
-            {
-                cells[i][j]->setText("");
-            }
-            else
-            {
-                cells[i][j]->setText(
-                    QString::number(value)
-                    );
-            }
+            updateCell(cells[i][j],value);
         }
     }
 
@@ -99,21 +179,33 @@ void MainWindow::updateBoard()
 void MainWindow::keyPressEvent(QKeyEvent *event){
     int dir = -1;
     switch(event->key()){
-        case Qt::Key_A:
-            dir = 0;
-            break;
-        case Qt::Key_D:
-            dir = 1;
-            break;
-        case Qt::Key_W:
-            dir = 2;
-            break;
-        case Qt::Key_S:
-            dir = 3;
-            break;
+    case Qt::Key_A:
+        dir = 0;
+        break;
+    case Qt::Key_D:
+        dir = 1;
+        break;
+    case Qt::Key_W:
+        dir = 2;
+        break;
+    case Qt::Key_S:
+        dir = 3;
+        break;
     }
     if(game.Move(dir)){
-        game.chain_match();
         updateBoard();
+        QTimer::singleShot(500, this, [=]()
+        {
+            game.chain_match();
+            game.Gravity();
+            updateBoard();
+        });
+
     }
 }
+void MainWindow::on_pushButton_clicked()
+{
+    game.Init();
+    updateBoard();
+}
+
