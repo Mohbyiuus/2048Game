@@ -16,7 +16,8 @@ HEADERS += \
     Game.h \
     MatchGame.h \
     ClickableLabel.h \
-    mainwindow.h
+    mainwindow.h \
+    Evaluate.h
 
 FORMS += \
     mainwindow.ui

@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Evaluate.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -13,35 +14,30 @@ BaseGame::BaseGame(QObject *parent) : QObject(parent){
 }
 void BaseGame::Init() {
     score = 0;
+    Cnt2048 = 0;
     for (int i=1;i<=N;i++)
         for (int j=1;j<=M;j++) Board[i][j] = 0;
-    NewNumber();
-    NewNumber();
+    NewNumber(1, 3, 1);
+    NewNumber(1, 3, 1);
+    NewNumber(1, 3, 1);
     Gravity();
     update();
 }
 double BaseGame::GetScore() {return score;}
 int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
-void BaseGame::NewNumber() {
-
-    int EmptyCnt = 0;
-    vector <pair<int, int> >EmptyCode;
+void BaseGame::NewNumber(int l, int r, double lucky) {
+    int EmptyNode = 0;
     for (int i=1;i<=N;i++)
-        for (int j=1;j<=N;j++) if(!Board[i][j]) {
-                EmptyCnt++;
-                EmptyCode.push_back (make_pair(i, j));
-            }
-    if(!EmptyCnt) return;
+        for (int j=1;j<=M;j++) if (!Board[i][j]) EmptyNode ++;
+    if(!EmptyNode) return;
+
     random_device rd;
     mt19937 gen(rd());
-
-    uniform_int_distribution<int> distp(0, EmptyCnt-1);
+    auto res = Reaction(l, r, Board);
+    uniform_int_distribution<int> distp(0, (int)(res.size()-1)*lucky);
     int pos = distp(gen);
-    int x = EmptyCode[pos].first, y = EmptyCode[pos].second;
-    uniform_real_distribution<double> distn(0.0, 1);
-    double num = distn(gen);
-
-    Board[x][y] = (num > 0.8) ? 4 : 2;
+    
+    Board[res[pos].x][res[pos].y] = (1<<res[pos].z);
 }
 bool BaseGame::InRange(int x, int y) {return x && y && x <= N && y <= M;}
 bool BaseGame::CanMove(int direction) {
@@ -134,7 +130,9 @@ bool BaseGame::Move(int direction) {
         }
         break;
     }
-    NewNumber();
+    for (int i=1;i<=max(1, Cnt2048/2);i++)
+        NewNumber(1, 3, exp(-sqrt(Cnt2048)));
+    Cnt2048 ++ ;
     Gravity();
     update();
     return true;

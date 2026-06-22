@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-const int N = 4, M = 6; // 游戏界面尺寸
+const int N = 6, M = 6; // 游戏界面尺寸
 inline int Dx[] = { 0, 0,-1, 1};
 inline int Dy[] = {-1, 1, 0, 0};
 class BaseGame : public QObject {
@@ -11,7 +11,8 @@ class BaseGame : public QObject {
 protected:
     double score;
     int Board[N+1][M+1];
-    void NewNumber ();
+    int Cnt2048; // 记录连续2048操作的次数
+    void NewNumber (int l, int r, double lucky);
     bool InRange (int x, int y);
     bool CanMove (int direction);
 public:

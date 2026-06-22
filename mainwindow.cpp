@@ -196,7 +196,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
         updateBoard();
         QTimer::singleShot(500, this, [=]()
         {
-            game.chain_match();
+    //         game.chain_match();
             game.Gravity();
             updateBoard();
         });
