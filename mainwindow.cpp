@@ -7,6 +7,8 @@
 #include <QTimer>
 #include<MatchGame.h>
 #include<QKeyEvent>
+#include <QVBoxLayout>
+#include <QPixmap>
 
 
 
@@ -229,3 +231,53 @@ void MainWindow::gameover()
 
 
 
+
+void MainWindow::on_help_clicked()
+{
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("帮助");
+    dialog->resize(450, 450);
+
+    QLabel *imageLabel = new QLabel(dialog);
+
+    QPixmap pix(":/images/help.jpg");   // Qt资源文件里的图片
+
+    imageLabel->setPixmap(
+        pix.scaled(550, 550,
+                   Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
+
+    imageLabel->setAlignment(Qt::AlignCenter);
+
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(imageLabel);
+
+    dialog->setLayout(layout);
+    dialog->exec();
+}
+
+
+void MainWindow::on_thanks_clicked()
+{
+    QDialog *dialog = new QDialog(this);
+    dialog->resize(450, 450);
+
+    QLabel *imageLabel = new QLabel(dialog);
+
+    QPixmap pix(":/images/thanks.jpg");
+
+    imageLabel->setPixmap(
+        pix.scaled(550, 550,
+                   Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
+
+    imageLabel->setAlignment(Qt::AlignCenter);
+
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(imageLabel);
+
+    dialog->setLayout(layout);
+    dialog->exec();
+}
