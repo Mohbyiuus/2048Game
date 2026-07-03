@@ -292,7 +292,7 @@ void MainWindow::on_help_clicked()
 
     QLabel *imageLabel = new QLabel(dialog);
 
-    QPixmap pix(":/images/help.jpg");   // Qt资源文件里的图片
+    QPixmap pix(":/help.jpg");   // Qt资源文件里的图片
 
     imageLabel->setPixmap(
         pix.scaled(550, 550,
@@ -317,7 +317,7 @@ void MainWindow::on_thanks_clicked()
 
     QLabel *imageLabel = new QLabel(dialog);
 
-    QPixmap pix(":/images/thanks.jpg");
+    QPixmap pix(":/thanks.jpg");
 
     imageLabel->setPixmap(
         pix.scaled(550, 550,
