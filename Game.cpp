@@ -65,7 +65,18 @@ void BaseGame::Gravity () {
         }
     }
 }
-bool BaseGame::IsGameOver() { return (CanMove(0) || CanMove(1) || CanMove(2) || CanMove(3)); }
+bool BaseGame::IsGameOver() { 
+    bool flag = CanMove(0) | CanMove(1) | CanMove(2) | CanMove(3);
+    for (int i=1;i<=N-1;i++)
+        for (int j=1;j<=M;j++) {
+            flag = flag | exchange(i, j, i+1, j);
+        }
+    for (int i=1;i<=N;i++)
+        for (int j=1;j<=M-1;j++) {
+            flag = flag | exchange(i, j, i, j+1);
+        }
+    return flag;
+}
 bool BaseGame::Move(int direction) {
     if (!CanMove(direction)) return false;
     switch (direction) {
@@ -136,4 +147,27 @@ bool BaseGame::Move(int direction) {
     Gravity();
     update();
     return true;
+}
+
+bool BaseGame::exchange(int xa, int ya, int xb, int yb) {
+    int tmpBoard[N+1][M+1];
+    for (int i=0;i<=N;i++)
+        for (int j=0;j<=M;j++) tmpBoard[i][j] = Board[i][j];
+    swap(tmpBoard[xa][ya], tmpBoard[xb][yb]);
+    bool flag = false;
+    for (int i=1;i<=N;i++)
+        for (int j=1;j<=M-2;j++) {
+            if (tmpBoard[i][j] == tmpBoard[i][j+1] && tmpBoard[i][j+1] == tmpBoard[i][j+2]){
+                flag = true;
+                break;
+            }
+        }
+    for (int j=1;j<=M;j++)
+        for (int i=1;i<=N-2;i++) {
+            if (tmpBoard[i][j] == tmpBoard[i+1][j] && tmpBoard[i+1][j] == tmpBoard[i+2][j]){
+                flag = true;
+                break;
+            }
+        }
+    return flag;
 }

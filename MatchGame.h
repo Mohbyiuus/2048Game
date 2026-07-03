@@ -12,5 +12,6 @@ public:
     MatchGame(QObject *parent = nullptr);
     bool match();
     void chain_match();
+    bool update_for_exchange(int xa, int ya, int xb, int yb);
 };
 #endif // MATCHGAME_H

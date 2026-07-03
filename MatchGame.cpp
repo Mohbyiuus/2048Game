@@ -1,5 +1,6 @@
 #include"MatchGame.h"
 #include<queue>
+#include <algorithm>
 
 MatchGame::MatchGame(QObject *parent):BaseGame(parent){
 }
@@ -77,4 +78,13 @@ void MatchGame::chain_match(){
     while(match()){
         Gravity();
     }
+}
+
+bool MatchGame::update_for_exchange(int xa, int ya, int xb, int yb) {
+    if (exchange(xa, ya, xb, yb)) {
+        std::swap(Board[xa][ya], Board[xb][yb]);
+        chain_match();
+        return true;
+    }
+    return false;
 }

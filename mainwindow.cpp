@@ -7,6 +7,8 @@
 #include <QTimer>
 #include<MatchGame.h>
 #include<QKeyEvent>
+#include <QVBoxLayout>
+#include <QPixmap>
 
 
 
@@ -266,7 +268,7 @@ void MainWindow::on_cell_clicked(){
     //3.点击相邻格子，触发交换
     else if(abs(sel_r-r)+abs(sel_c-c)==1){
         if(game.GetBoard(r, c) == 0) return;
-        //交换
+        game.update_for_exchange(sel_r, sel_c, r, c);
         clicked_clear();
     }
     //4.点击不相邻格子，切换选中目标
@@ -281,3 +283,53 @@ void MainWindow::on_cell_clicked(){
     }
 }
 
+
+void MainWindow::on_help_clicked()
+{
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("帮助");
+    dialog->resize(450, 450);
+
+    QLabel *imageLabel = new QLabel(dialog);
+
+    QPixmap pix(":/images/help.jpg");   // Qt资源文件里的图片
+
+    imageLabel->setPixmap(
+        pix.scaled(550, 550,
+                   Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
+
+    imageLabel->setAlignment(Qt::AlignCenter);
+
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(imageLabel);
+
+    dialog->setLayout(layout);
+    dialog->exec();
+}
+
+
+void MainWindow::on_thanks_clicked()
+{
+    QDialog *dialog = new QDialog(this);
+    dialog->resize(450, 450);
+
+    QLabel *imageLabel = new QLabel(dialog);
+
+    QPixmap pix(":/images/thanks.jpg");
+
+    imageLabel->setPixmap(
+        pix.scaled(550, 550,
+                   Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
+
+    imageLabel->setAlignment(Qt::AlignCenter);
+
+
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(imageLabel);
+
+    dialog->setLayout(layout);
+    dialog->exec();
+}

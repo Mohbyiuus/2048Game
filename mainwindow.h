@@ -38,5 +38,8 @@ protected:
 private slots:
     void on_pushButton_clicked();
     void on_cell_clicked();
+    void on_help_clicked();
+    void on_thanks_clicked();
+
 };
 #endif // MAINWINDOW_H
