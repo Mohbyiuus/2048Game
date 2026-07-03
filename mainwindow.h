@@ -26,12 +26,17 @@ public:
     void updateCell(ClickableLabel* label, int value);
     ClickableLabel* cells[N+1][M+1];
     void gameover();
+    void clicked_clear();
 
 private:
     Ui::MainWindow *ui;
+    ClickableLabel* sel_cell = nullptr;
+    int sel_r = 0;
+    int sel_c = 0;
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private slots:
     void on_pushButton_clicked();
+    void on_cell_clicked();
 };
 #endif // MAINWINDOW_H

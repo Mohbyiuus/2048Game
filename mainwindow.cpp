@@ -155,6 +155,7 @@ void MainWindow::initBoard()
 
             grid->addWidget(label, i-1, j-1);
 
+            connect(label,&ClickableLabel::clicked,this,&MainWindow::on_cell_clicked);
         }
     }
 }
@@ -191,6 +192,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     case Qt::Key_S:
         dir = 3;
         break;
+    default:
+        QMainWindow::keyPressEvent(event); 
+        return;
     }
     if(game.Move(dir)){
         updateBoard();
@@ -200,9 +204,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
             game.Gravity();
             updateBoard();
         });
-    }
-    if(!game.IsGameOver()){
-        gameover();
+        if(!game.IsGameOver()){
+            gameover();
+        }
     }
 }
 void MainWindow::on_pushButton_clicked()
@@ -227,5 +231,53 @@ void MainWindow::gameover()
     }
 }
 
+void MainWindow::clicked_clear(){
+    sel_r = 0;
+    sel_c = 0;
+    sel_cell = nullptr;
+    updateBoard();
+}
 
+void MainWindow::on_cell_clicked(){
+    //找到被点击的格子(r,c)
+    ClickableLabel* clicked = qobject_cast<ClickableLabel*>(sender());
+    int r = 0,c = 0;
+    for(int i = 1; i<= N; i++){
+        for(int j = 1; j <= M; j++){
+            if(cells[i][j] == clicked){
+                r = i;
+                c = j;
+            }
+        }
+    }
+    //判断
+    //1.第一次点击
+    if(sel_cell == nullptr){
+        if(game.GetBoard(r, c) == 0) return;
+        sel_r = r;
+        sel_c = c;
+        sel_cell = clicked;
+        sel_cell->setStyleSheet(sel_cell->styleSheet() + "border:3px solid #ffcc00;");
+    }
+    //2.点击同一个格子，视为取消
+    else if(sel_r==r && sel_c==c){
+        clicked_clear();
+    }
+    //3.点击相邻格子，触发交换
+    else if(abs(sel_r-r)+abs(sel_c-c)==1){
+        if(game.GetBoard(r, c) == 0) return;
+        //交换
+        clicked_clear();
+    }
+    //4.点击不相邻格子，切换选中目标
+    else{
+        if(game.GetBoard(r, c) == 0) return;
+        clicked_clear();
+        sel_cell = clicked;
+        sel_r = r;
+        sel_c = c;
+        sel_cell->setStyleSheet(sel_cell->styleSheet() + "border:3px solid #ffcc00;");
+
+    }
+}
 

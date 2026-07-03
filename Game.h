@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-const int N = 6, M = 6; // 游戏界面尺寸
+const int N = 4, M = 4; // 游戏界面尺寸
 inline int Dx[] = { 0, 0,-1, 1};
 inline int Dy[] = {-1, 1, 0, 0};
 class BaseGame : public QObject {
