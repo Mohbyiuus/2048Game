@@ -31,4 +31,5 @@ DISTFILES += \
     style.qss
 
 RESOURCES += \
+    images.qrc \
     resources.qrc
