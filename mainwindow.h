@@ -33,6 +33,7 @@ private:
     ClickableLabel* sel_cell = nullptr;
     int sel_r = 0;
     int sel_c = 0;
+    bool swap_used = false;
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 private slots:

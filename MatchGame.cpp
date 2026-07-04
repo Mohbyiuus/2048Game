@@ -1,6 +1,7 @@
 #include"MatchGame.h"
 #include<queue>
 #include <algorithm>
+#include<vector>
 
 MatchGame::MatchGame(QObject *parent):BaseGame(parent){
 }
@@ -8,6 +9,7 @@ MatchGame::MatchGame(QObject *parent):BaseGame(parent){
 bool MatchGame::match(){//n连消除,如果发生消除返回1
     int mask[N+1][M+1] = {0};
     bool hasmatch = 0;
+    std::vector<Reward> rewards;
     //横
     for(int i = 1; i <= N; ++i){
         int j = 1;
@@ -29,6 +31,8 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
                 for(int k = 0; k < len; k++){
                     mask[i][j+k] += exceed;
                 }
+                int center_col = j + len/2;
+                rewards.push_back({i,center_col,len-1+(int)log2(GetBoard(i,center_col))});
             }
             j += len;
         }
@@ -54,6 +58,8 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
                 for(int k = 0; k < len; k++){
                     mask[i+k][j] += exceed;
                 }
+                int center_row = i + len/2;
+                rewards.push_back({center_row,j,len-1+(int)log2(GetBoard(center_row,j))});
             }
             i += len;
         }
@@ -69,6 +75,10 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
                 }
             }
         }
+        for(auto & r : rewards){
+            Board[r.x][r.y] = (1<<r.power);
+        }
+        rewards.clear();
     }
 
     return hasmatch;
@@ -86,5 +96,5 @@ bool MatchGame::update_for_exchange(int xa, int ya, int xb, int yb) {
         chain_match();
         return true;
     }
-    return false;
+    return false; 
 }

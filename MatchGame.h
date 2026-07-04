@@ -7,6 +7,10 @@
 const double ratio = 1.1;
 const int LEAST_MATCH_NUM = 3;
 
+struct Reward{
+    int x=0, y=0, power=0;
+};
+
 class MatchGame: public BaseGame{
 public:
     MatchGame(QObject *parent = nullptr);
@@ -14,4 +18,5 @@ public:
     void chain_match();
     bool update_for_exchange(int xa, int ya, int xb, int yb);
 };
+
 #endif // MATCHGAME_H

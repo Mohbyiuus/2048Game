@@ -200,6 +200,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     }
     if(game.Move(dir)){
         updateBoard();
+        swap_used = false;//每次键盘操作后重置交换次数
         QTimer::singleShot(500, this, [=]()
         {
     //         game.chain_match();
@@ -268,7 +269,12 @@ void MainWindow::on_cell_clicked(){
     //3.点击相邻格子，触发交换
     else if(abs(sel_r-r)+abs(sel_c-c)==1){
         if(game.GetBoard(r, c) == 0) return;
+        if(swap_used){
+            clicked_clear();
+            return;
+        }
         game.update_for_exchange(sel_r, sel_c, r, c);
+        swap_used = true;
         clicked_clear();
     }
     //4.点击不相邻格子，切换选中目标
