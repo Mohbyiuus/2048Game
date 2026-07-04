@@ -144,7 +144,7 @@ bool BaseGame::Move(int direction) {
     for (int i=1;i<=max(1, Cnt2048/3);i++)
         NewNumber(1, 3, exp(-Cnt2048));
     Cnt2048 ++ ;
-    Gravity();
+    //Gravity();
     update();
     return true;
 }
