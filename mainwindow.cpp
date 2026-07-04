@@ -273,9 +273,13 @@ void MainWindow::on_cell_clicked(){
             clicked_clear();
             return;
         }
-        game.update_for_exchange(sel_r, sel_c, r, c);
-        swap_used = true;
+        if(game.update_for_exchange(sel_r, sel_c, r, c)){
+            swap_used = true;            
+        }
         clicked_clear();
+        if(!game.IsGameOver()){
+            gameover();
+        }
     }
     //4.点击不相邻格子，切换选中目标
     else{

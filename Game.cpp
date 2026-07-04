@@ -157,14 +157,14 @@ bool BaseGame::exchange(int xa, int ya, int xb, int yb) {
     bool flag = false;
     for (int i=1;i<=N;i++)
         for (int j=1;j<=M-2;j++) {
-            if (tmpBoard[i][j] == tmpBoard[i][j+1] && tmpBoard[i][j+1] == tmpBoard[i][j+2]){
+            if (tmpBoard[i][j] != 0 && tmpBoard[i][j] == tmpBoard[i][j+1] && tmpBoard[i][j+1] == tmpBoard[i][j+2]){
                 flag = true;
                 break;
             }
         }
     for (int j=1;j<=M;j++)
         for (int i=1;i<=N-2;i++) {
-            if (tmpBoard[i][j] == tmpBoard[i+1][j] && tmpBoard[i+1][j] == tmpBoard[i+2][j]){
+            if (tmpBoard[i][j] != 0 && tmpBoard[i][j] == tmpBoard[i+1][j] && tmpBoard[i+1][j] == tmpBoard[i+2][j]){
                 flag = true;
                 break;
             }
