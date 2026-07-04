@@ -40,18 +40,15 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>200</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLabel" name="picture_leftup">
+           <widget class="QPushButton" name="thanks">
             <property name="text">
-             <string>picture</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
+             <string>作者介绍</string>
             </property>
            </widget>
           </item>
@@ -107,24 +104,27 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>200</width>
+           <width>1666666</width>
            <height>16777215</height>
           </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLabel" name="picture_rightup">
+           <widget class="QPushButton" name="help">
             <property name="minimumSize">
              <size>
-              <width>200</width>
-              <height>0</height>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>45</height>
              </size>
             </property>
             <property name="text">
-             <string>picture</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
+             <string>帮助</string>
             </property>
            </widget>
           </item>
