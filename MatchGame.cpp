@@ -94,6 +94,7 @@ bool MatchGame::update_for_exchange(int xa, int ya, int xb, int yb) {
     if (exchange(xa, ya, xb, yb)) {
         std::swap(Board[xa][ya], Board[xb][yb]);
         chain_match();
+        Cnt2048 = 0;
         return true;
     }
     return false; 
