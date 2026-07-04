@@ -15,7 +15,7 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
         int j = 1;
         while(j<=M){
             int cur_val = Board[i][j];
-            if(cur_val == 0){//跳过空格
+            if(cur_val <= 2){//跳过空格
                 j++;
                 continue;
             }
@@ -42,7 +42,7 @@ bool MatchGame::match(){//n连消除,如果发生消除返回1
         int i = 1;
         while(i<=N){
             int cur_val = Board[i][j];
-            if(cur_val == 0){//跳过空格
+            if(cur_val <= 2){//跳过空格
                 i++;
                 continue;
             }

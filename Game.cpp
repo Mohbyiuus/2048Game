@@ -141,8 +141,8 @@ bool BaseGame::Move(int direction) {
         }
         break;
     }
-    for (int i=1;i<=max(1, Cnt2048/2);i++)
-        NewNumber(1, 3, exp(-sqrt(Cnt2048)));
+    for (int i=1;i<=max(1, Cnt2048/3);i++)
+        NewNumber(1, 3, exp(-Cnt2048));
     Cnt2048 ++ ;
     Gravity();
     update();
@@ -157,14 +157,14 @@ bool BaseGame::exchange(int xa, int ya, int xb, int yb) {
     bool flag = false;
     for (int i=1;i<=N;i++)
         for (int j=1;j<=M-2;j++) {
-            if (tmpBoard[i][j] != 0 && tmpBoard[i][j] == tmpBoard[i][j+1] && tmpBoard[i][j+1] == tmpBoard[i][j+2]){
+            if (tmpBoard[i][j] > 2 && tmpBoard[i][j] == tmpBoard[i][j+1] && tmpBoard[i][j+1] == tmpBoard[i][j+2]){
                 flag = true;
                 break;
             }
         }
     for (int j=1;j<=M;j++)
         for (int i=1;i<=N-2;i++) {
-            if (tmpBoard[i][j] != 0 && tmpBoard[i][j] == tmpBoard[i+1][j] && tmpBoard[i+1][j] == tmpBoard[i+2][j]){
+            if (tmpBoard[i][j] > 2 && tmpBoard[i][j] == tmpBoard[i+1][j] && tmpBoard[i+1][j] == tmpBoard[i+2][j]){
                 flag = true;
                 break;
             }
