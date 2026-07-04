@@ -54,7 +54,7 @@ void MainWindow::updateCell(ClickableLabel* label, int value)
 
     QString bgColor;
     QString textColor = "#776e65";
-    int fontSize = 24;
+    int fontSize = 40;
 
     switch(value)
     {
@@ -152,7 +152,7 @@ void MainWindow::initBoard()
 
             label->setAlignment(Qt::AlignCenter);
 
-            label->setFixedSize(72,72);
+            label->setFixedSize(90,90);
 
 
             grid->addWidget(label, i-1, j-1);
