@@ -351,17 +351,17 @@ void MainWindow::animateSlide(int direction){
         return;
     }
 
-    // 只清 ghost 源格子的背景色
+    // 清除源格子（值移走了），目标格子保留旧值等 ghost 滑入
     for(const auto &g : ghosts)
         updateCell(cells[g.srcRow][g.srcCol], 0);
 
     auto *alive = new int(ghosts.size());
     for(const auto &g : ghosts){
         auto *anim = new QPropertyAnimation(g.label, "pos");
-        anim->setDuration(180);
+        anim->setDuration(200);
         anim->setStartValue(g.from);
         anim->setEndValue(g.to);
-        anim->setEasingCurve(QEasingCurve::OutCubic);
+        anim->setEasingCurve(QEasingCurve::OutQuad);
         QObject::connect(anim, &QPropertyAnimation::finished, [=]() mutable {
             g.label->deleteLater();
             (*alive)--;
