@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->titleLabel->setFixedHeight(70);
     QFile file(":/style.qss");
 
     if(!file.open(QFile::ReadOnly))
