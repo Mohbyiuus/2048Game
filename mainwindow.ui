@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>2048 Match</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,7 +56,7 @@
        <item>
         <widget class="QLabel" name="titleLabel">
          <property name="text">
-          <string>2048</string>
+          <string>2048 × Match</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignmentFlag::AlignCenter</set>

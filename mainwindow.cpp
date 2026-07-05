@@ -29,6 +29,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     initBoard();
 
+    ui->picture_left->setText(
+        "<div style='text-align:center;color:#94a3b8;font-size:15px;line-height:1.6;'>"
+        "<b style='font-size:20px;color:#e2e8f0;'>2048</b><br><br>"
+        "<span style='color:#38bdf8;'>W ↑</span> 上移<br>"
+        "<span style='color:#38bdf8;'>S ↓</span> 下移<br>"
+        "<span style='color:#38bdf8;'>A ←</span> 左移<br>"
+        "<span style='color:#38bdf8;'>D →</span> 右移<br><br>"
+        "<span style='color:#64748b;'>合并同值方块</span>"
+        "</div>");
+
+    ui->picture_right->setText(
+        "<div style='text-align:center;color:#94a3b8;font-size:15px;line-height:1.6;'>"
+        "<b style='font-size:20px;color:#e2e8f0;'>Match</b><br><br>"
+        "点击选中方块<br>"
+        "点击相邻方块<br>"
+        "交换并消除<br><br>"
+        "<span style='color:#64748b;'>3连以上消除</span>"
+        "</div>");
+
     updateBoard();
 }
 
@@ -44,8 +63,8 @@ void MainWindow::updateCell(ClickableLabel* label, int value)
         label->setText("");
 
         label->setStyleSheet(
-            "background:#cdc1b4;"
-            "border-radius:10px;"
+            "background:#334155;"
+            "border-radius:8px;"
             );
         return;
     }
@@ -54,7 +73,7 @@ void MainWindow::updateCell(ClickableLabel* label, int value)
 
     QString bgColor;
     QString textColor = "#776e65";
-    int fontSize = 40;
+    int fontSize = 28;
 
     switch(value)
     {
@@ -104,26 +123,27 @@ void MainWindow::updateCell(ClickableLabel* label, int value)
     case 1024:
         bgColor = "#edc53f";
         textColor = "white";
-        fontSize = 20;
+        fontSize = 22;
         break;
 
     case 2048:
         bgColor = "#edc22e";
         textColor = "white";
-        fontSize = 20;
+        fontSize = 22;
         break;
 
     default:
         bgColor = "#3c3a32";
         textColor = "white";
-        fontSize = 18;
+        fontSize = 20;
     }
 
     label->setStyleSheet(QString(
                              "background:%1;"
-                             "border-radius:10px;"
+                             "border-radius:8px;"
                              "font-size:%2px;"
                              "font-weight:bold;"
+                             "font-family:'MapleMono',sans-serif;"
                              "color:%3;"
                              )
                              .arg(bgColor)
