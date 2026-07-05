@@ -35,7 +35,7 @@ public:
     void animatePopIn(int row, int col);
     void animateSwap(int r1, int c1, int r2, int c2);
     void animateAllChanges();
-
+    void animateSlide(int direction);
 private:
     Ui::MainWindow *ui;
     ClickableLabel* sel_cell = nullptr;
