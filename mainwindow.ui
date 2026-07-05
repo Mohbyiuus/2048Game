@@ -31,28 +31,10 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QWidget" name="widget_5" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
+        <widget class="QPushButton" name="thanks">
+         <property name="text">
+          <string>作者介绍</string>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QPushButton" name="thanks">
-            <property name="text">
-             <string>作者介绍</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </widget>
        </item>
        <item>
@@ -60,7 +42,7 @@
          <property name="minimumSize">
           <size>
            <width>169</width>
-           <height>0</height>
+           <height>70</height>
           </size>
          </property>
          <property name="text">
@@ -89,46 +71,22 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>new game</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_6" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
+        <widget class="QPushButton" name="help">
+         <property name="text">
+          <string>帮助</string>
          </property>
-         <property name="maximumSize">
-          <size>
-           <width>1666666</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QPushButton" name="help">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>45</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>45</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>帮助</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </widget>
        </item>
       </layout>
@@ -155,7 +113,7 @@
           <item>
            <widget class="QLabel" name="picture_left">
             <property name="text">
-             <string>picture</string>
+             <string/>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -192,7 +150,7 @@
           <item>
            <widget class="QLabel" name="picture_right">
             <property name="text">
-             <string>picture</string>
+             <string/>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -212,4 +170,3 @@
  <resources/>
  <connections/>
 </ui>
-
