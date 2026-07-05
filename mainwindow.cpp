@@ -9,6 +9,10 @@
 #include<QKeyEvent>
 #include <QVBoxLayout>
 #include <QPixmap>
+#include <QPropertyAnimation>
+#include <QGraphicsOpacityEffect>
+#include <QParallelAnimationGroup>
+#include <QSequentialAnimationGroup>
 
 
 
@@ -151,6 +155,82 @@ void MainWindow::updateCell(ClickableLabel* label, int value)
                              .arg(textColor));
 }
 
+/* =========================
+   动画系统
+   ========================= */
+
+void MainWindow::saveSnapshot(){
+    for(int i=1;i<=N;i++)
+        for(int j=1;j<=M;j++)
+            prevBoard[i][j] = game.GetBoard(i,j);
+}
+
+void MainWindow::animateFadeOut(int row, int col){
+    auto *fx = new QGraphicsOpacityEffect(cells[row][col]);
+    fx->setOpacity(1.0);
+    cells[row][col]->setGraphicsEffect(fx);
+    auto *anim = new QPropertyAnimation(fx, "opacity");
+    anim->setDuration(180);
+    anim->setStartValue(1.0);
+    anim->setEndValue(0.0);
+    anim->setEasingCurve(QEasingCurve::OutCubic);
+    QObject::connect(anim, &QPropertyAnimation::finished, [=](){
+        cells[row][col]->setGraphicsEffect(nullptr);
+        updateCell(cells[row][col], 0);
+    });
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void MainWindow::animatePopIn(int row, int col){
+    updateCell(cells[row][col], game.GetBoard(row,col));
+    cells[row][col]->setMaximumSize(0, 0);
+    auto *anim = new QPropertyAnimation(cells[row][col], "maximumSize");
+    anim->setDuration(220);
+    anim->setStartValue(QSize(0, 0));
+    anim->setEndValue(QSize(72, 72));
+    anim->setEasingCurve(QEasingCurve::OutBack);
+    QObject::connect(anim, &QPropertyAnimation::finished, [=](){
+        cells[row][col]->setMaximumSize(16777215, 16777215);
+    });
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+void MainWindow::animateSwap(int r1, int c1, int r2, int c2){
+    ClickableLabel *a = cells[r1][c1], *b = cells[r2][c2];
+    QString aStyle = a->styleSheet(), bStyle = b->styleSheet();
+    a->setStyleSheet(aStyle + "border:3px solid #f59e0b;");
+    b->setStyleSheet(bStyle + "border:3px solid #f59e0b;");
+    QTimer::singleShot(150, this, [=](){
+        updateCell(a, game.GetBoard(r1,c1));
+        updateCell(b, game.GetBoard(r2,c2));
+    });
+}
+
+void MainWindow::animateAllChanges(){
+    // 1. 淡出：prevBoard有值但当前为0 → 被消除了
+    for(int i=1;i<=N;i++)
+        for(int j=1;j<=M;j++)
+            if(prevBoard[i][j] != 0 && game.GetBoard(i,j) == 0)
+                animateFadeOut(i, j);
+
+    // 2. 弹入：prevBoard为0但当前有值 → 新生成 / 奖励方块
+    QTimer::singleShot(250, this, [this](){
+        for(int i=1;i<=N;i++)
+            for(int j=1;j<=M;j++)
+                if(prevBoard[i][j] == 0 && game.GetBoard(i,j) != 0)
+                    animatePopIn(i, j);
+        // 其余变动直接刷新（重力下落）
+        for(int i=1;i<=N;i++)
+            for(int j=1;j<=M;j++)
+                if(prevBoard[i][j] != game.GetBoard(i,j) &&
+                   !(prevBoard[i][j]==0 && game.GetBoard(i,j)!=0) &&
+                   !(prevBoard[i][j]!=0 && game.GetBoard(i,j)==0))
+                    updateCell(cells[i][j], game.GetBoard(i,j));
+        // 更新分数
+        ui->scoreLabel->setText("Score: " + QString::number(game.GetScore()));
+    });
+}
+
 void MainWindow::initBoard()
 {
     QGridLayout* grid =
@@ -219,14 +299,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
         return;
     }
     if(game.Move(dir)){
+        swap_used = false;
         updateBoard();
-        swap_used = false;//每次键盘操作后重置交换次数
-        QTimer::singleShot(500, this, [=]()
-        {
-    //         game.chain_match();
-            game.Gravity();
-            updateBoard();
-        });
         if(!game.IsGameOver()){
             gameover();
         }
@@ -293,8 +367,11 @@ void MainWindow::on_cell_clicked(){
             clicked_clear();
             return;
         }
+        saveSnapshot();
         if(game.update_for_exchange(sel_r, sel_c, r, c)){
-            swap_used = true;            
+            swap_used = true;
+            animateSwap(sel_r, sel_c, r, c);
+            QTimer::singleShot(200, this, [=](){ animateAllChanges(); });            
         }
         clicked_clear();
         if(!game.IsGameOver()){

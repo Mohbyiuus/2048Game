@@ -28,6 +28,14 @@ public:
     void gameover();
     void clicked_clear();
 
+    // 动画系统
+    int prevBoard[N+1][M+1];
+    void saveSnapshot();
+    void animateFadeOut(int row, int col);
+    void animatePopIn(int row, int col);
+    void animateSwap(int r1, int c1, int r2, int c2);
+    void animateAllChanges();
+
 private:
     Ui::MainWindow *ui;
     ClickableLabel* sel_cell = nullptr;
