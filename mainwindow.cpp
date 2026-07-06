@@ -201,10 +201,24 @@ void MainWindow::animateSwap(int r1, int c1, int r2, int c2){
     QString aStyle = a->styleSheet(), bStyle = b->styleSheet();
     a->setStyleSheet(aStyle + "border:3px solid #f59e0b;");
     b->setStyleSheet(bStyle + "border:3px solid #f59e0b;");
-    QTimer::singleShot(150, this, [=](){
-        updateCell(a, game.GetBoard(r1,c1));
-        updateCell(b, game.GetBoard(r2,c2));
+    QTimer::singleShot(200, this, [=](){
+        a->setStyleSheet(aStyle);
+        b->setStyleSheet(bStyle);
     });
+}
+
+void MainWindow::runChainStep(){
+    saveSnapshot();
+    if(game.match()){
+        animateAllChanges();  // 淡出消除 + 弹入奖励
+        QTimer::singleShot(500, this, [=](){
+            game.Gravity();
+            updateBoard();
+            QTimer::singleShot(300, this, [=](){ runChainStep(); });
+        });
+    } else {
+        updateBoard();
+    }
 }
 
 void MainWindow::animateAllChanges(){
@@ -308,7 +322,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     saveSnapshot();
     if(game.Move(dir)){
         swap_used = false;
-        animateSlide(dir);
+        updateBoard();
         if(!game.IsGameOver()){
             gameover();
         }
@@ -377,13 +391,14 @@ void MainWindow::on_cell_clicked(){
         }
         saveSnapshot();
         if(game.update_for_exchange(sel_r, sel_c, r, c)){
-            //swap_used = true;
             animateSwap(sel_r, sel_c, r, c);
-            QTimer::singleShot(200, this, [=](){ animateAllChanges(); });
-        }
-        clicked_clear();
-        if(!game.IsGameOver()){
-            gameover();
+            QTimer::singleShot(200, this, [=](){ runChainStep(); });
+            QTimer::singleShot(200, this, [=](){
+                clicked_clear();
+                if(!game.IsGameOver()) gameover();
+            });
+        } else {
+            clicked_clear();
         }
     }
     //4.点击不相邻格子，切换选中目标
