@@ -23,7 +23,7 @@ void BaseGame::Init() {
     Gravity();
     update();
 }
-double BaseGame::GetScore() {return score;}
+double BaseGame::GetScore() {return int(score);}
 int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
 void BaseGame::NewNumber(int l, int r, double lucky) {
     int EmptyNode = 0;
