@@ -514,7 +514,7 @@ void MainWindow::on_cell_clicked(){
         }
         saveSnapshot();
         if(game.update_for_exchange(sel_r, sel_c, r, c)){
-            swap_used = true;
+            //swap_used = true;
             animateSwap(sel_r, sel_c, r, c);
             QTimer::singleShot(200, this, [=](){ animateAllChanges(); });
         }
