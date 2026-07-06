@@ -23,7 +23,7 @@ void BaseGame::Init() {
     Gravity();
     update();
 }
-double BaseGame::GetScore() {return score;}
+double BaseGame::GetScore() {return int(score);}
 int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
 
 //NewNumber函数用于生成一个2^l到2^r之间的数字
