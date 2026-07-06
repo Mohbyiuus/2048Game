@@ -591,10 +591,12 @@ void MainWindow::on_help_clicked()
     descLabel->setText(
         "<div style='text-align:center;color:#e2e8f0;font-size:16px;"
         "line-height:2.2;font-family:\"MapleMono\",sans-serif;'>"
-        "<b>A</b><br>"
-        "<b>B</b><br>"
-        "<b>C</b><br>"
-        "<b>D</b>"
+        "<b>此游戏具有重力系统，每次滑动都会触发重力<br>"
+        "<b>每次消除会在交换的位置都会<br>"
+        "<b>创生一个数值为原来数的平方的新方块</b><br>"
+        "<b>2无法被消除</b><br>"
+        "<b>鼓励超大数消除</b><br>"
+        "<b>现在，开始操作吧！</b>"
         "</div>");
     descLabel->setAlignment(Qt::AlignCenter);
     descLabel->setStyleSheet("border:none;background:transparent;");
@@ -605,7 +607,6 @@ void MainWindow::on_help_clicked()
     dialog->setLayout(layout);
     dialog->exec();
 }
-
 
 void MainWindow::on_thanks_clicked()
 {
