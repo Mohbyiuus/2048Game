@@ -12,6 +12,7 @@ using namespace std;
 BaseGame::BaseGame(QObject *parent) : QObject(parent){
     Init();
 }
+
 void BaseGame::Init() {
     score = 0;
     Cnt2048 = 0;
@@ -23,6 +24,7 @@ void BaseGame::Init() {
     Gravity();
     update();
 }
+
 double BaseGame::GetScore() {return int(score);}
 int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
 
@@ -42,6 +44,7 @@ void BaseGame::NewNumber(int l, int r, double lucky) {
     
     Board[res[pos].x][res[pos].y] = (1<<res[pos].z);
 }
+
 bool BaseGame::InRange(int x, int y) {return x && y && x <= N && y <= M;}
 bool BaseGame::CanMove(int direction) {
     for (int i=1;i<=N;i++)

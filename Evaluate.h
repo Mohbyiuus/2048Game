@@ -145,7 +145,7 @@ double evaluate(int (&arr)[N][M]) {
             }
         }
     }
-    // 惩罚项直接减去（系数可调，这里取 5.0）
+    // 惩罚项直接减去（系数可调，这里取系数 5.0）
     double monotonic = -5.0 * monotonic_penalty;
 
     // 5. 角落最大值奖励
