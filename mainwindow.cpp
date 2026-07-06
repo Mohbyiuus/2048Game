@@ -233,146 +233,9 @@ void MainWindow::animateAllChanges(){
 }
 
 void MainWindow::animateSlide(int direction){
-    int cellSize = cells[1][1]->width();
-    if(cellSize <= 0) cellSize = 72;
-
-    // 用 mapTo 取每个格子在 boardWidget 坐标系下的左上角
-    auto gridToWidget = [&](int row, int col) -> QPoint {
-        return cells[row][col]->mapTo(ui->boardWidget, QPoint(0,0));
-    };
-
-    // 创建 overlay 标签，模拟旧值滑动到新位置
-    struct Ghost { QLabel *label; QPoint from, to; int srcRow, srcCol; };
-    QVector<Ghost> ghosts;
-
-    // 遍历方向对应的行/列，做值追踪
-    if(direction == 0 || direction == 1){  // 水平方向
-        int cStep = (direction == 0) ? 1 : -1;
-        for(int row=1; row<=N; row++){
-            // 收集旧值 (value, col)
-            QVector<QPair<int,int>> oldVals;
-            for(int c=(direction==0?1:M); (direction==0?c<=M:c>=1); c+=cStep)
-                if(prevBoard[row][c] != 0)
-                    oldVals.append({prevBoard[row][c], c});
-
-            // 收集新值 (value, col)
-            QVector<QPair<int,int>> newVals;
-            for(int c=(direction==0?1:M); (direction==0?c<=M:c>=1); c+=cStep)
-                if(game.GetBoard(row, c) != 0)
-                    newVals.append({game.GetBoard(row, c), c});
-
-            // 匹配：合并会造成数量变化。简单策略：顺次映射
-            int oi = 0, ni = 0;
-            while(oi < oldVals.size() && ni < newVals.size()){
-                int ov = oldVals[oi].first, oc = oldVals[oi].second;
-                int nv = newVals[ni].first, nc = newVals[ni].second;
-                if(ov == nv && oc != nc){  // 值相同、位置不同 → 滑动
-                    QLabel *g = new QLabel(ui->boardWidget);
-                    g->setText(QString::number(ov));
-                    g->setFixedSize(cellSize, cellSize);
-                    g->setAlignment(Qt::AlignCenter);
-                    g->setStyleSheet(cells[row][oc]->styleSheet());
-                    g->move(gridToWidget(row, oc));
-                    g->show();
-                    ghosts.append({g, gridToWidget(row, oc), gridToWidget(row, nc), row, oc});
-                    oi++; ni++;
-                } else if(oi+1 < oldVals.size() && ov == oldVals[oi+1].first && ov*2 == nv){
-                    // 合并：两个相同旧值→一个新值，双双滑入目标格
-                    int oc2 = oldVals[oi+1].second;
-                    for(int k=0;k<2;k++){
-                        int srcCol = (k==0) ? oc : oc2;
-                        QLabel *g = new QLabel(ui->boardWidget);
-                        g->setText(QString::number(ov));
-                        g->setFixedSize(cellSize, cellSize);
-                        g->setAlignment(Qt::AlignCenter);
-                        g->setStyleSheet(cells[row][srcCol]->styleSheet());
-                        g->move(gridToWidget(row, srcCol));
-                        g->show();
-                        ghosts.append({g, gridToWidget(row, srcCol), gridToWidget(row, nc), row, srcCol});
-                    }
-                    oi += 2; ni++;
-                } else {
-                    oi++;
-                }
-            }
-        }
-    } else {  // 垂直方向
-        int rStep = (direction == 2) ? 1 : -1;
-        for(int col=1; col<=M; col++){
-            QVector<QPair<int,int>> oldVals;
-            for(int r=(direction==2?1:N); (direction==2?r<=N:r>=1); r+=rStep)
-                if(prevBoard[r][col] != 0)
-                    oldVals.append({prevBoard[r][col], r});
-
-            QVector<QPair<int,int>> newVals;
-            for(int r=(direction==2?1:N); (direction==2?r<=N:r>=1); r+=rStep)
-                if(game.GetBoard(r, col) != 0)
-                    newVals.append({game.GetBoard(r, col), r});
-
-            int oi = 0, ni = 0;
-            while(oi < oldVals.size() && ni < newVals.size()){
-                int ov = oldVals[oi].first, or_ = oldVals[oi].second;
-                int nv = newVals[ni].first, nr = newVals[ni].second;
-                if(ov == nv && or_ != nr){
-                    QLabel *g = new QLabel(ui->boardWidget);
-                    g->setText(QString::number(ov));
-                    g->setFixedSize(cellSize, cellSize);
-                    g->setAlignment(Qt::AlignCenter);
-                    g->setStyleSheet(cells[or_][col]->styleSheet());
-                    g->move(gridToWidget(or_, col));
-                    g->show();
-                    ghosts.append({g, gridToWidget(or_, col), gridToWidget(nr, col), or_, col});
-                    oi++; ni++;
-                } else if(oi+1 < oldVals.size() && ov == oldVals[oi+1].first && ov*2 == nv){
-                    int or2 = oldVals[oi+1].second;
-                    for(int k=0;k<2;k++){
-                        int srcRow = (k==0) ? or_ : or2;
-                        QLabel *g = new QLabel(ui->boardWidget);
-                        g->setText(QString::number(ov));
-                        g->setFixedSize(cellSize, cellSize);
-                        g->setAlignment(Qt::AlignCenter);
-                        g->setStyleSheet(cells[srcRow][col]->styleSheet());
-                        g->move(gridToWidget(srcRow, col));
-                        g->show();
-                        ghosts.append({g, gridToWidget(srcRow, col), gridToWidget(nr, col), srcRow, col});
-                    }
-                    oi += 2; ni++;
-                } else {
-                    oi++;
-                }
-            }
-        }
-    }
-
-    // 执行滑动动画
-    if(ghosts.isEmpty()){
-        updateBoard();
-        ui->scoreLabel->setText("Score: "+QString::number(game.GetScore()));
-        return;
-    }
-
-    // 清除源格子（值移走了），目标格子保留旧值等 ghost 滑入
-    for(const auto &g : ghosts)
-        updateCell(cells[g.srcRow][g.srcCol], 0);
-
-    auto *alive = new int(ghosts.size());
-    for(const auto &g : ghosts){
-        auto *anim = new QPropertyAnimation(g.label, "pos");
-        anim->setDuration(200);
-        anim->setStartValue(g.from);
-        anim->setEndValue(g.to);
-        anim->setEasingCurve(QEasingCurve::OutQuad);
-        QObject::connect(anim, &QPropertyAnimation::finished, [=]() mutable {
-            g.label->deleteLater();
-            (*alive)--;
-            if(*alive <= 0){
-                updateBoard();
-                ui->scoreLabel->setText("Score: "+QString::number(game.GetScore()));
-                delete alive;
-            }
-        });
-        anim->start(QAbstractAnimation::DeleteWhenStopped);
-    }
+    Q_UNUSED(direction);
+    updateBoard();
+    ui->scoreLabel->setText("Score: "+QString::number(game.GetScore()));
 }
 
 void MainWindow::initBoard()
@@ -444,16 +307,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     }
     saveSnapshot();
     if(game.Move(dir)){
-        updateBoard();
-        QTimer::singleShot(500, this, [=]()
-        {
-            game.chain_match();
-            game.Gravity();
-            updateBoard();
-        });
-    }
-    if(!game.IsGameOver()){
-        gameover();
+        swap_used = false;
+        animateSlide(dir);
+        if(!game.IsGameOver()){
+            gameover();
+        }
     }
 }
 void MainWindow::on_pushButton_clicked()
