@@ -25,6 +25,9 @@ void BaseGame::Init() {
 }
 double BaseGame::GetScore() {return score;}
 int BaseGame::GetBoard(int i, int j) {return Board[i][j];}
+
+//NewNumber函数用于生成一个2^l到2^r之间的数字
+//lucky参数是幸运值，生成规则是在所有合法生成集合按评估函数值排序，在前lucky*100%中随机选取，特别地，若lucky是1就是纯随机
 void BaseGame::NewNumber(int l, int r, double lucky) {
     int EmptyNode = 0;
     for (int i=1;i<=N;i++)
@@ -48,6 +51,8 @@ bool BaseGame::CanMove(int direction) {
             }
     return false;
 }
+
+//游戏新引入的重力机制
 void BaseGame::Gravity () {
     for(int i = 1; i <= M; i++){
         std::queue<int> q;
@@ -65,6 +70,8 @@ void BaseGame::Gravity () {
         }
     }
 }
+
+//用于判断游戏是否结束
 bool BaseGame::IsGameOver() { 
     bool flag = CanMove(0) | CanMove(1) | CanMove(2) | CanMove(3);
     for (int i=1;i<=N-1;i++)
@@ -77,6 +84,8 @@ bool BaseGame::IsGameOver() {
         }
     return flag;
 }
+
+//进行一次2048操作
 bool BaseGame::Move(int direction) {
     if (!CanMove(direction)) return false;
     switch (direction) {
@@ -149,6 +158,7 @@ bool BaseGame::Move(int direction) {
     return true;
 }
 
+//判断操作是不是一个合法的消消乐交换
 bool BaseGame::exchange(int xa, int ya, int xb, int yb) {
     int tmpBoard[N+1][M+1];
     for (int i=0;i<=N;i++)

@@ -90,7 +90,7 @@ double evaluate(int (&arr)[N][M]) {
             }
         }
 
-    // 4. 行/列单调性惩罚
+    // 4. 行/列不单调性惩罚
     double monotonic_penalty = 0.0;
     // 检查每一行（从左到右）
     for (int i = 1; i <= n; ++i) {

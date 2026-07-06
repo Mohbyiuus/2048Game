@@ -1,3 +1,5 @@
+//此文件仅用于测试评估函数的效果，请不要用于项目制作 
+
 #include "Evaluate.h"
 using namespace std;
 
