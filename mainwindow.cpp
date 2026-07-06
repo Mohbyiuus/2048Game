@@ -228,7 +228,7 @@ void MainWindow::animateAllChanges(){
                    !(prevBoard[i][j]!=0 && game.GetBoard(i,j)==0))
                     updateCell(cells[i][j], game.GetBoard(i,j));
         // 更新分数
-        ui->scoreLabel->setText("Score: " + QString::number(game.GetScore()));
+        ui->scoreLabel->setText("得分： " + QString::number(game.GetScore()));
     });
 }
 
@@ -347,7 +347,7 @@ void MainWindow::animateSlide(int direction){
     // 执行滑动动画
     if(ghosts.isEmpty()){
         updateBoard();
-        ui->scoreLabel->setText("Score: "+QString::number(game.GetScore()));
+        ui->scoreLabel->setText("得分： "+QString::number(game.GetScore()));
         return;
     }
 
@@ -367,7 +367,7 @@ void MainWindow::animateSlide(int direction){
             (*alive)--;
             if(*alive <= 0){
                 updateBoard();
-                ui->scoreLabel->setText("Score: "+QString::number(game.GetScore()));
+                ui->scoreLabel->setText("得分： "+QString::number(game.GetScore()));
                 delete alive;
             }
         });
@@ -419,7 +419,7 @@ void MainWindow::updateBoard()
     }
 
     ui->scoreLabel->setText(
-        "Score: " + QString::number(game.GetScore())
+        "得分： " + QString::number(game.GetScore())
         );
 }
 
