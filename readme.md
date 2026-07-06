@@ -18,7 +18,13 @@
 
 ## 2.模块设计细节
 
-- mainwindow：
+- mainwindow：采用暗色调为主题，风格现代简约
+  由ui、cpp和style联合构成，其中ui负责基本框架搭建，cpp负责填充内容并接入Game，style负责每个版块UI风格
+
+  ```
+  void animateSwap(int row, int col)//完成交换过程
+  void animateAllChanges()//实现动态效果
+  ```
 
 - Game：内含class BaseGame，2048的操作基类，用于完成传统的2048操作（平移，合并）
 
