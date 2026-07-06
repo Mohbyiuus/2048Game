@@ -18,13 +18,18 @@
 
 ## 2.模块设计细节
 
-- mainwindow：采用暗色调为主题，风格现代简约
-  由ui、cpp和style联合构成，其中ui负责基本框架搭建，cpp负责填充内容并接入Game，style负责每个版块UI风格
+- mainwindow：采用暗色调为主题，风格现代简约。由ui、cpp和style联合构成，其中ui负责基本框架搭建，cpp负责填充内容并接入Game，style负责每个版块UI风格。
 
-  ```
-  void animateSwap(int row, int col)//完成交换过程
-  void animateAllChanges()//实现动态效果
-  ```
+  - WASD 键盘操作：`keyPressEvent()` 捕获方向键和 WASD，映射到 2048 的 Move 方向。
+  - 鼠标点击交换：`on_cell_clicked()` 处理两次点击选中相邻方块，触发消消乐交换。
+  - 消除动画：`animateAllChanges()` 对比操作前后棋盘快照，被消除的方块淡出（`animateFadeOut`）、新生成的方块弹入（`animatePopIn`）。
+    ```
+    void saveSnapshot();         // 保存操作前棋盘快照
+    void animateFadeOut(int,int);// 方块淡出（QGraphicsOpacityEffect）
+    void animatePopIn(int,int);  // 方块弹入（maximumSize 缩放）
+    void animateSwap(int,int,int,int); // 交换闪烁
+    ```
+  - 链式消除调度：`runChainStep()` 异步逐步执行 match → 淡出(500ms) → Gravity → 递归，动画化连锁消除过程。
 
 - Game：内含class BaseGame，2048的操作基类，用于完成传统的2048操作（平移，合并）
 
@@ -49,7 +54,19 @@
 
   随着用户连续进行2048操作，调用NewNumber的次数会变多，lucky会降低。进行消消乐操作可以重置这些值
 
-- MatchGame：内含class MatchGame：BaseGame的派生类，增加了消消乐的操作判定。
+- MatchGame：内含class MatchGame：BaseGame的派生类，实现了消消乐玩法。核心特性：
+
+  - 消除与奖励：`match()` 检测横纵方向上3连及以上的连续同值方块，消除后在匹配中心生成奖励方块（值 = 原值 × $2^{n-1}$，n 为连续个数）。十字交叉位置的方块倍率叠加。
+    ```cpp
+    score += Board[i][j] * pow(1.1, mask[i][j]);  // 连消倍率奖励
+    Board[r.x][r.y] = (1 << r.power);              // 奖励方块
+    ```
+  - 链式消除：`chain_match()` 循环执行 `while(match()) Gravity()`，消除后重力下落，新布局可能形成新的匹配，引发连锁消除反应。
+  - 交换逻辑：`exchange()` 模拟交换，`update_for_exchange()` 执行合法交换。鼠标点击两个相邻方块，判定是否构成3连，合法则交换并触发链式消除，否则交换无效。
+    ```cpp
+    bool exchange(int xa, int ya, int xb, int yb);            // 模拟交换判定
+    bool update_for_exchange(int xa, int ya, int xb, int yb); // 执行交换
+    ```
 
 - Evaluate：评估函数部分
 
