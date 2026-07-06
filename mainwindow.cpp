@@ -540,22 +540,67 @@ void MainWindow::on_help_clicked()
 {
     QDialog *dialog = new QDialog(this);
     dialog->setWindowTitle("帮助");
-    dialog->resize(450, 450);
+    dialog->resize(460, 480);
+    dialog->setMinimumSize(380, 400);
 
-    QLabel *imageLabel = new QLabel(dialog);
+    // 应用与主窗口相同的样式表，补充 QDialog 背景色
+    QFile file(":/style.qss");
+    if (file.open(QFile::ReadOnly)) {
+        QString qss = file.readAll();
+        qss += "\nQDialog { background-color: #0f172a; }";
+        dialog->setStyleSheet(qss);
+        file.close();
+    }
 
-    QPixmap pix(":/images/help.jpg");   // Qt资源文件里的图片
-
-    imageLabel->setPixmap(
-        pix.scaled(550, 550,
-                   Qt::KeepAspectRatio,
-                   Qt::SmoothTransformation));
-
-    imageLabel->setAlignment(Qt::AlignCenter);
-
-
+    // 主布局：撑满整个窗口
     QVBoxLayout *layout = new QVBoxLayout(dialog);
-    layout->addWidget(imageLabel);
+    layout->setContentsMargins(20, 20, 20, 20);
+    layout->setSpacing(16);
+
+    // 标题区域
+    QLabel *titleLabel = new QLabel("帮助", dialog);
+    titleLabel->setObjectName("titleLabel");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet(
+        "background:transparent;"
+        "color:#f1f5f9;"
+        "border:none;"
+        "padding:12px 0px;"
+        "font-size:28px;"
+        "font-weight:900;"
+        "letter-spacing:6px;"
+        "font-family:'MapleMono',sans-serif;"
+    );
+    layout->addWidget(titleLabel);
+
+    // 文字面板
+    QWidget *textPanel = new QWidget(dialog);
+    textPanel->setObjectName("boardWidget");
+    textPanel->setStyleSheet(
+        "#boardWidget{"
+        "background-color:#1e293b;"
+        "border:2px solid #334155;"
+        "border-radius:14px;"
+        "padding:40px 16px;"
+        "}"
+    );
+    QVBoxLayout *textLayout = new QVBoxLayout(textPanel);
+    textLayout->setContentsMargins(0, 0, 0, 0);
+
+    QLabel *descLabel = new QLabel(textPanel);
+    descLabel->setText(
+        "<div style='text-align:center;color:#e2e8f0;font-size:16px;"
+        "line-height:2.2;font-family:\"MapleMono\",sans-serif;'>"
+        "<b>A</b><br>"
+        "<b>B</b><br>"
+        "<b>C</b><br>"
+        "<b>D</b>"
+        "</div>");
+    descLabel->setAlignment(Qt::AlignCenter);
+    descLabel->setStyleSheet("border:none;background:transparent;");
+    textLayout->addWidget(descLabel);
+
+    layout->addWidget(textPanel, 1);
 
     dialog->setLayout(layout);
     dialog->exec();
@@ -565,22 +610,68 @@ void MainWindow::on_help_clicked()
 void MainWindow::on_thanks_clicked()
 {
     QDialog *dialog = new QDialog(this);
-    dialog->resize(450, 450);
+    dialog->setWindowTitle("作者介绍");
+    dialog->resize(460, 480);
+    dialog->setMinimumSize(380, 400);
 
-    QLabel *imageLabel = new QLabel(dialog);
+    // 应用与主窗口相同的样式表，补充 QDialog 背景色
+    QFile file(":/style.qss");
+    if (file.open(QFile::ReadOnly)) {
+        QString qss = file.readAll();
+        qss += "\nQDialog { background-color: #0f172a; }";
+        dialog->setStyleSheet(qss);
+        file.close();
+    }
 
-    QPixmap pix(":/images/thanks.jpg");
-
-    imageLabel->setPixmap(
-        pix.scaled(550, 550,
-                   Qt::KeepAspectRatio,
-                   Qt::SmoothTransformation));
-
-    imageLabel->setAlignment(Qt::AlignCenter);
-
-
+    // 主布局：撑满整个窗口
     QVBoxLayout *layout = new QVBoxLayout(dialog);
-    layout->addWidget(imageLabel);
+    layout->setContentsMargins(20, 20, 20, 20);
+    layout->setSpacing(16);
+
+    // 标题区域
+    QLabel *titleLabel = new QLabel("关于作者", dialog);
+    titleLabel->setObjectName("titleLabel");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet(
+        "background:transparent;"
+        "color:#f1f5f9;"
+        "border:none;"
+        "padding:12px 0px;"
+        "font-size:28px;"
+        "font-weight:900;"
+        "letter-spacing:6px;"
+        "font-family:'MapleMono',sans-serif;"
+    );
+    layout->addWidget(titleLabel);
+
+    // 文字面板
+    QWidget *textPanel = new QWidget(dialog);
+    textPanel->setObjectName("boardWidget");
+    textPanel->setStyleSheet(
+        "#boardWidget{"
+        "background-color:#1e293b;"
+        "border:2px solid #334155;"
+        "border-radius:14px;"
+        "padding:40px 16px;"
+        "}"
+    );
+    QVBoxLayout *textLayout = new QVBoxLayout(textPanel);
+    textLayout->setContentsMargins(0, 0, 0, 0);
+
+    QLabel *descLabel = new QLabel(textPanel);
+    descLabel->setText(
+        "<div style='text-align:center;color:#e2e8f0;font-size:22px;"
+        "line-height:2.4;font-family:\"MapleMono\",sans-serif;'>"
+        "此游戏由<br>"
+        "<b>廖开琦、刘智恒、欧阳儒松</b><br>"
+        "<b>共同开发完成</b><br>"
+        "<b>感谢您的游玩！</b>"
+        "</div>");
+    descLabel->setAlignment(Qt::AlignCenter);
+    descLabel->setStyleSheet("border:none;background:transparent;");
+    textLayout->addWidget(descLabel);
+
+    layout->addWidget(textPanel, 1);
 
     dialog->setLayout(layout);
     dialog->exec();
