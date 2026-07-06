@@ -33,7 +33,7 @@
        <item>
         <widget class="QPushButton" name="thanks">
          <property name="text">
-          <string>作者介绍</string>
+          <string>作者</string>
          </property>
         </widget>
        </item>
@@ -78,7 +78,7 @@
           </size>
          </property>
          <property name="text">
-          <string>new game</string>
+          <string>新游戏</string>
          </property>
         </widget>
        </item>
