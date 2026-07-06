@@ -444,11 +444,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     }
     saveSnapshot();
     if(game.Move(dir)){
-        swap_used = false;
-        animateSlide(dir);
-        if(!game.IsGameOver()){
-            gameover();
-        }
+        updateBoard();
+        QTimer::singleShot(500, this, [=]()
+        {
+            game.chain_match();
+            game.Gravity();
+            updateBoard();
+        });
+    }
+    if(!game.IsGameOver()){
+        gameover();
     }
 }
 void MainWindow::on_pushButton_clicked()
